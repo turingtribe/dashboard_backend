@@ -2,5 +2,5 @@
 PORT = 8000;
 database = "testing";
 username = "root";
-password = "root";
+password = "6809";
 host = "localhost";
