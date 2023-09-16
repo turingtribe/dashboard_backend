@@ -1,7 +1,7 @@
 // Example database model for users
 const { database_config } = require("../config/database");
 const { DataTypes } = require("sequelize");
-const {UserDetail}=require("./userDetailsModel");
+const { UserDetail } = require("./userDetailsModel");
 const User = database_config.define(
   "Users",
   {
@@ -19,7 +19,7 @@ const User = database_config.define(
       allowNull: false,
     },
     phone: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     ReferralCode: {
@@ -35,7 +35,7 @@ const User = database_config.define(
     timestamps: false, // This will remove createdAt and updatedAt columns
   }
 );
-User.hasOne(UserDetail, { foreignKey: 'UserDetailsId' });
+User.hasOne(UserDetail, { foreignKey: "UserDetailsId" });
 // User.hasMany(Registration, { foreignKey: 'userId' });
 User.sync()
   .then(() => {
