@@ -8,7 +8,6 @@ const UserDetail = database_config.define(
     UserDetailsId: {
       type: DataTypes.INTEGER,
       primaryKey: true, // Indicates this is the primary key
-      autoIncrement: true,
     },
     profileImage: {
       type: DataTypes.STRING(255),
