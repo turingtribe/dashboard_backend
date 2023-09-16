@@ -2,5 +2,5 @@
 PORT=8000
 database="Dashboard_Backend"
 username= "root"
-password= "tanya123"
+password= ""
 host= "localhost" 
