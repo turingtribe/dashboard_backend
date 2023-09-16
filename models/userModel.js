@@ -1,7 +1,7 @@
 // Example database model for users
 const { database_config } = require("../config/database");
 const { DataTypes } = require("sequelize");
-
+const {UserDetail}=require("./userDetailsModel");
 const User = database_config.define(
   "Users",
   {
@@ -31,6 +31,8 @@ const User = database_config.define(
     timestamps: false, // This will remove createdAt and updatedAt columns
   }
 );
+User.hasOne(UserDetail, { foreignKey: 'UserDetailsId' });
+// User.hasMany(Registration, { foreignKey: 'userId' });
 module.exports = {
   User,
 };
