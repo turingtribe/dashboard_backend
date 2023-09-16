@@ -1,7 +1,8 @@
 const express = require("express");
 const { UserRoute } = require("./routes/User.Route");
 const { CourseRoute } = require("./routes/Couse.Route");
-const {ActivityRoute}=require("./routes/Activity.Route")
+const {ActivityRoute}=require("./routes/Activity.Route");
+const {MsatRoute}=require("./routes/Msat.route")
 const cors = require("cors");
 //USER SIGNUP ROUTE
 const { database_config } = require("./config/database");
@@ -11,7 +12,8 @@ app.use(express.json());
 app.use(cors());
 app.use("/", UserRoute);
 app.use("/", CourseRoute);
-app.use("/",ActivityRoute)
+app.use("/",ActivityRoute);
+app.use("/",MsatRoute);
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
