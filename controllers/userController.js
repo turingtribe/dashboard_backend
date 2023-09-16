@@ -36,7 +36,6 @@ const LoginUser = async (req, res) => {
     });
     if (user?.dataValues?.UserId) {
       var token = jwt.sign({ UserId: user.dataValues.UserId }, "loginornot");
-
       res.send(token);
     } else {
       res.send("Wrong Credentials");
@@ -45,6 +44,7 @@ const LoginUser = async (req, res) => {
     res.send(err);
   }
 };
+
 let rotp = 0;
 // login using mobile number
 const loginByMobile = async (req, res) => {
@@ -90,6 +90,7 @@ const verfiyOTP = async (req, res) => {
     res.send("not found");
   }
 };
+
 
 module.exports = {
   register,
