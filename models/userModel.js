@@ -19,12 +19,16 @@ const User = database_config.define(
       allowNull: false,
     },
     phone: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     ReferralCode: {
       type: DataTypes.STRING(255),
       allowNull: true,
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {

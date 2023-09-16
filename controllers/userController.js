@@ -2,7 +2,6 @@
 const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
-const authToken = "6276b474677d425f348bc7a711251b35";
 const client = require("twilio")(accountSid, authToken);
 //REGISTER USER LOGIC
 const register = async (req, res) => {
@@ -15,7 +14,6 @@ const register = async (req, res) => {
       },
     });
     if (user === null) {
-      await User.create({ userName, email, phone, ReferralCode });
       res.send("User created Successfully");
     } else {
       res.send("User Already Exist");
@@ -45,11 +43,22 @@ const LoginUser = async (req, res) => {
     res.send(err);
   }
 };
+
 let rotp = 0;
 // login using mobile number
 const loginByMobile = async (req, res) => {
   try {
     const { phone } = req.body;
+    rotp = Math.floor(100000 + Math.random() * 900000);
+    client.messages
+      .create({
+        body:
+          "This is a testing, hope you got the message. Your OTP is " + rotp,
+        from: "+13347317373",
+        to: "+91" + phone,
+      })
+      .then((message) => console.log(message.sid))
+      .done();
     const user = await User.findOne({
       where: {
         phone: phone,
