@@ -1,4 +1,5 @@
-const Activity = require("../models/ActivitiesModel");
+const Activity = require("../models/activitiesModel");
+
 class ActivityController {
   async createActivity(req, res) {
     try {

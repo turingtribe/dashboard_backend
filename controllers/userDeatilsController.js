@@ -1,5 +1,5 @@
 const { UserDetail } = require("../models/userDetailsModel");
-const UserData = async (req, res) => {
+const userData = async (req, res) => {
   try {
     const { profileImage, dob, graduation, work, adharCard } = req.body;
 
@@ -11,17 +11,16 @@ const UserData = async (req, res) => {
 };
 
 //GET USER DETAILS
-const GETDETAILS=async(req,res)=>{
-  const finduser=req.body.UserId;
-try{
-const getuser=await UserDetail.findOne({
-  where:{UserDetailsId:finduser}
-})
-console.log(getuser)
-}
-catch(err){
-  res.send(err);
-}
-}
+const getUserDetails = async (req, res) => {
+  const finduser = req.body.UserId;
+  try {
+    const getuser = await UserDetail.findOne({
+      where: { UserDetailsId: finduser },
+    });
+    console.log(getuser);
+  } catch (err) {
+    res.send(err);
+  }
+};
 
-module.exports = {UserData,GETDETAILS};
+module.exports = { userData, getUserDetails };

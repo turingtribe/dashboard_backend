@@ -24,7 +24,7 @@ const register = async (req, res) => {
         ReferralCode,
         isAdmin: false,
       });
-      res.send({message:"User created Successfully"});
+      res.send({ message: "User created Successfully" });
     } else {
       res.send("User Already Exist");
     }
@@ -34,7 +34,7 @@ const register = async (req, res) => {
 };
 
 //LOGIN USER LOGIC
-const LoginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({
@@ -101,7 +101,7 @@ const verfiyOTP = async (req, res) => {
 
 module.exports = {
   register,
-  LoginUser,
+  loginUser,
   loginByMobile,
   verfiyOTP,
 };

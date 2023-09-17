@@ -1,4 +1,4 @@
-const { Msat } = require("./MsatModel");
+const { Msat } = require("./msatModel");
 const { database_config } = require("../config/database");
 const { DataTypes } = require("sequelize");
 // Define the MsatSubSection model

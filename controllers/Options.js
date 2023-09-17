@@ -1,4 +1,4 @@
-const {Options}= require("../models/Options");
+const {Options}= require("../models/options");
 
 const msatOption= async (req, res) => {
    
