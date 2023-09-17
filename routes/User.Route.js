@@ -1,9 +1,7 @@
 const express = require("express");
 const UserRoute = express.Router();
-const {
-  UserData,
-  GETDETAILS,
-} = require("../controllers/userDeatilsController");
+const {UserData,GETDETAILS} = require("../controllers/userDeatilsController");
+const {AuthMiddleware}=require("../middleware/authentication");
 const {
   register,
   LoginUser,
@@ -16,7 +14,8 @@ UserRoute.post("/login", LoginUser);
 UserRoute.get("/login-by-number", loginByMobile);
 UserRoute.post("/verify", verfiyOTP);
 UserRoute.post("/details", UserData);
-UserRoute.get("/details", GETDETAILS);
+UserRoute.get("/details",AuthMiddleware, GETDETAILS);
+
 module.exports = {
   UserRoute,
 };

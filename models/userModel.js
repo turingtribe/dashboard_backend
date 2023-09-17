@@ -36,7 +36,6 @@ const User = database_config.define(
   }
 );
 User.hasOne(UserDetail, { foreignKey: "UserDetailsId" });
-// User.hasMany(Registration, { foreignKey: 'userId' });
 User.sync()
   .then(() => {
     console.log("user table created");
