@@ -6,7 +6,7 @@ const AuthMiddleware = (req, res, next) => {
   if (token) {
     const decode = jwt.verify(token, "loginornot");
     req.body.userId = decode.UserId;
-    // console.log("i am decode",decode)
+    console.log("i am decode", decode);
     if (decode) {
       next();
     }
