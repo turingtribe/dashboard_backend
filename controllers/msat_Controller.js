@@ -2,7 +2,7 @@ const { MsatSubSection } = require("../models/msat_Subsection");
 const { Question } = require("../models/question");
 const { Options } = require("../models/options");
 const { Msat } = require("../models/msatModel");
-
+const { User } = require("../models/userModel");
 class MsatController {
   constructor() {}
 
@@ -33,7 +33,6 @@ class MsatController {
               // Associate the question with the model.
               // newMsat.sub_section.questions.push(newQuestion);
               let questionId = newQuestion.questionId;
-              console.log(question);
               // If the model has options, create a new instance of each option model.
               console.log(model.sub_section.questions);
               if (question.options) {
@@ -97,6 +96,55 @@ class MsatController {
         result.push(msat);
       }
       res.status(200).json(result);
+    } catch (error) {
+      res.status(501).send(error);
+    }
+  }
+
+  async calculateScore(req, res) {
+    try {
+      const { sub_sectionId, option_id } = req.body;
+      const section = await MsatSubSection.findByPk(sub_sectionId);
+      const option = await Options.findByPk(option_id);
+      section.dataValues.score == null
+        ? (section.dataValues.score = 0)
+        : (section.dataValues.score = section.dataValues.score);
+      console.log("Hello " + option.dataValues.is_correct);
+      if (option.dataValues.is_correct) {
+        section.dataValues.score += 3;
+      } else {
+        if (section.dataValues.score > 0) {
+          section.dataValues.score--;
+        }
+      }
+      await MsatSubSection.update(
+        { score: section.dataValues.score },
+        {
+          where: {
+            sub_sectionId: sub_sectionId,
+          },
+        }
+      );
+      res.send({ message: `Your score is ${section.dataValues.score}/100` });
+    } catch (error) {
+      res.status(501).send(error);
+    }
+  }
+
+  async userScore(req, res) {
+    try {
+      const authToken = req.headers.authorization;
+      const decodedToken = jwt.verify(authToken, "loginornot");
+      console.log(
+        "=============================================\n============================="
+      );
+
+      // Extract the user ID from the payload
+      const userId = decodedToken.sub;
+
+      // Query the database to get the user details
+      const user = await User.findByPk(userId);
+      console.log("i am token", user);
     } catch (error) {
       res.status(501).send(error);
     }

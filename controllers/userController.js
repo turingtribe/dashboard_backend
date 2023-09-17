@@ -45,8 +45,8 @@ const loginUser = async (req, res) => {
 
     if (user?.dataValues?.userId) {
       var token = jwt.sign({ UserId: user?.dataValues?.UserId }, "loginornot");
-      // res.setHeader("Authorization", `Bearer ${token}`);
-      res.send(token);
+      res.setHeader("Authorization", `Bearer ${token}`);
+      res.status(200).send({ token: token });
     } else {
       res.status(404).send({ message: "Wrong Credentials" });
     }
