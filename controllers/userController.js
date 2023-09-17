@@ -34,11 +34,13 @@ const LoginUser = async (req, res) => {
         email: email,
       },
     });
+
     if (user?.dataValues?.UserId) {
-      var token = jwt.sign({ UserId: user.dataValues.UserId }, "loginornot");
+      var token = jwt.sign({ UserId: user?.dataValues?.UserId }, "loginornot");
+      // res.setHeader("Authorization", `Bearer ${token}`);
       res.send(token);
     } else {
-      res.send("Wrong Credentials");
+      res.status(404).send({ message: "Wrong Credentials" });
     }
   } catch (err) {
     res.send(err);
@@ -82,7 +84,7 @@ const verfiyOTP = async (req, res) => {
       phone: phone,
     },
   });
-  console.log(user);
+  console.log(user?.dataValues?.UserId, "hlooooooooooooooo");
   if (user?.dataValues?.UserId && otp == rotp) {
     var token = jwt.sign({ UserId: user.dataValues.UserId }, "loginornot");
     res.send(token);
@@ -90,7 +92,6 @@ const verfiyOTP = async (req, res) => {
     res.send("not found");
   }
 };
-
 
 module.exports = {
   register,
