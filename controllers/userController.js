@@ -1,10 +1,13 @@
 // Example controller for handling user-related logic
+let otp;
 const { User } = require("../models/userModel");
+const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
 const authToken = "7f1a563963b32fb9ef2b68d119dae86d";
 const client = require("twilio")(accountSid, authToken);
+require("dotenv").config();
 
 //REGISTER USER LOGIC
 const register = async (req, res) => {
@@ -36,22 +39,60 @@ const register = async (req, res) => {
 //LOGIN USER LOGIC
 const loginUser = async (req, res) => {
   const { email } = req.body;
-  try {
-    const user = await User.findOne({
-      where: {
-        email: email,
-      },
-    });
-
-    if (user?.dataValues?.userId) {
-      var token = jwt.sign({ UserId: user?.dataValues?.UserId }, "loginornot");
-      // res.setHeader("Authorization", `Bearer ${token}`);
+  if (req?.query?.otp) {
+    if (otp == req.query.otp) {
+      const email_verification = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+      const token = jwt.sign(
+        { userId: email_verification.dataValues.userId },
+        "loginornot"
+      );
+      res.setHeader("Authorization", `Bearer ${token}`);
       res.send(token);
     } else {
-      res.status(404).send({ message: "Wrong Credentials" });
+      res.send("wrong otp");
     }
-  } catch (err) {
-    res.status(401).send(err);
+  } else {
+    try {
+      const user = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (user?.dataValues?.userId) {
+        otp = Math.floor(100000 + Math.random() * 900000);
+        const transport = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "anmoljagota08@gmail.com",
+            pass: process.env.otp_password,
+          },
+        });
+
+        const info = {
+          from: "anmoljagota08@gmail.com",
+          to: req.body.email,
+          subject: "email verification masai",
+          text: `otp is ${otp}`,
+        };
+
+        transport.sendMail(info, (err, result) => {
+          if (err) {
+            console.log(`error in sending mail ${err}`);
+          } else {
+            res.send("otp send");
+          }
+        });
+      } else {
+        res.status(404).send({ message: "Wrong Credentials" });
+      }
+    } catch (err) {
+      res.status(401).send(err);
+    }
   }
 };
 
