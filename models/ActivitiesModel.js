@@ -10,6 +10,9 @@ const Activity = database_config.define("Activities", {
   type: {
     type: DataTypes.BOOLEAN,
   },
+  instructor_name: {
+    type: DataTypes.STRING(25),
+  },
   photoUrl: {
     type: DataTypes.STRING(100),
   },

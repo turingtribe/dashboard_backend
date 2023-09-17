@@ -2,9 +2,10 @@
 const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const accountSid = process.env.SMSSID;
+const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
 const authToken = process.env.SMSTOKEN;
 const client = require("twilio")(accountSid, authToken);
+
 //REGISTER USER LOGIC
 const register = async (req, res) => {
   const { userName, email, phone, ReferralCode } = req.body;
@@ -20,10 +21,10 @@ const register = async (req, res) => {
         userName,
         email,
         phone,
-        // ReferralCode,
+        ReferralCode,
         isAdmin: false,
       });
-      res.send("User created Successfully");
+      res.send({message:"User created Successfully"});
     } else {
       res.send("User Already Exist");
     }

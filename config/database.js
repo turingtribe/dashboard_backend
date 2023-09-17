@@ -3,9 +3,9 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const database_config = new Sequelize({
   dialect: "mysql", // Change this to your database dialect
-  database: "",
+  database: "testing",
   username: "root",
-  password: "",
+  password: "root",
   host: "localhost", // Change this to your database host
 });
 
