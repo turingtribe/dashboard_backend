@@ -14,7 +14,6 @@ const Options = database_config.define("Options", {
   },
   question_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     references: {
       model: Question,
       key: "questionId",

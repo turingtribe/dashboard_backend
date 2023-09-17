@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { database_config } = require("../config/database"); // Replace with your Sequelize instance
+const { User } = require("./userModel");
 
 const Activity = database_config.define("Activities", {
   activicesId: {
@@ -31,6 +32,13 @@ const Activity = database_config.define("Activities", {
   zoomlink: {
     type: DataTypes.STRING,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: "userId",
+    },
+  },
 });
 
 Activity.sync()
@@ -40,7 +48,5 @@ Activity.sync()
   .catch((error) => {
     console.error("Error creating Activity table:", error);
   });
-// Define associations
-// Activity.belongsTo(UserDetails, { foreignKey: "userDetailsId" });
 
 module.exports = Activity;
