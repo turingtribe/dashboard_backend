@@ -63,7 +63,7 @@ To create a new activity, send a POST request to the `/activities` endpoint with
 {
   "type": true,
   "photoUrl": "https://example.com/activity.jpg",
-  "instructor_name":"abc";
+  "instructor_name":"abc",
   "startDate": "2023-09-18T10:00:00.000Z",
   "endDate": "2023-09-18T11:00:00.000Z",
   "register": false,

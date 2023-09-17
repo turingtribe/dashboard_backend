@@ -1,4 +1,4 @@
-const { Question } = require("./Question");
+const { Question } = require("./question");
 const { database_config } = require("../config/database");
 const { DataTypes } = require("sequelize");
 // Define the Options model
@@ -14,10 +14,9 @@ const Options = database_config.define("Options", {
   },
   question_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     references: {
       model: Question,
-      key: "question_id",
+      key: "questionId",
     },
   },
   is_correct: {

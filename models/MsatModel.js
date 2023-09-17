@@ -1,6 +1,6 @@
 // Define Msat model
 const { database_config } = require("../config/database");
-const { UserDetail } = require("../models/userDetailsModel");
+const { User } = require("./userModel");
 const { DataTypes } = require("sequelize");
 const Msat = database_config.define("Msat", {
   msatId: {
@@ -16,14 +16,13 @@ const Msat = database_config.define("Msat", {
   },
   user_Id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     references: {
-      model: UserDetail,
-      key: "UserDetailsId",
+      model: User,
+      key: "userId",
     },
   },
 });
-Msat.belongsTo(UserDetail, {
+Msat.belongsTo(User, {
   foreignKey: "user_Id", // This defines the foreign key relationship
 });
 Msat.sync()

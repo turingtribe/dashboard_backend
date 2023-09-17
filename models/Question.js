@@ -1,9 +1,9 @@
-const { MsatSubSection } = require("./Msat_Subsection");
+const { MsatSubSection } = require("./msat_Subsection");
 const { database_config } = require("../config/database");
 const { DataTypes } = require("sequelize");
 // Define the Question model
 const Question = database_config.define("Question", {
-  question_id: {
+  questionId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
