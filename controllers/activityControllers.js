@@ -13,6 +13,13 @@ class ActivityController {
   async getAllActivities(req, res) {
     try {
       const activities = await Activity.findAll();
+      for (let activity of activities) {
+        if (activity.type == true) {
+          activity.type = "Masterclass";
+        } else {
+          activity.type = "Webinar";
+        }
+      }
       res.status(200).json(activities);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -38,11 +45,12 @@ class ActivityController {
     try {
       const activityId = req.params.activityId;
       const activity = await Activity.findByPk(activityId);
-
       if (!activity) {
         return res.status(404).json({ error: "Activity not found" });
       }
-
+      if (activity.type == true) {
+        activity.type = "Masterclass";
+      }
       res.status(200).json(activity);
     } catch (error) {
       res.status(500).json({ error: error.message });
