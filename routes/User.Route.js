@@ -11,10 +11,11 @@ const {
 
 UserRoute.post("/register", register);
 UserRoute.post("/login", LoginUser);
-UserRoute.post("/login-by-number", loginByMobile);
+UserRoute.get("/login-by-number", loginByMobile);
 UserRoute.post("/verify", verfiyOTP);
 UserRoute.post("/details", UserData);
 UserRoute.get("/details",AuthMiddleware, GETDETAILS);
+
 module.exports = {
   UserRoute,
 };
