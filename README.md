@@ -175,9 +175,6 @@ Provide instructions on how to run and use the project. Include any environment 
 
 Explain how others can contribute to the project if applicable.
 
-## License
-
-Specify the project's license if applicable.
 
 ## Details UnderStanding
 
@@ -303,3 +300,21 @@ profileImage,dob,graduation,work,adharcard,userName,email,phoneNumber
 - *Method:* `GET`
 - *Description:* Get the MSAT score of the authenticated user.
 - *Authentication:* Requires user authentication.
+
+# Tech Stack
+<ul>
+  <li>Nodejs</li>
+  <li>express</li>
+  <li>sequelize</li>
+  <li>MySQL</li>
+  <li>nodemailer</li>
+  <li>jwt</li>
+  </ul>
+
+# Contributors:-
+ 
+ - [@Omkar tripathi](https://github.com/triggeredcode)
+ - [@Bivek Rai](https://github.com/HazeCom)
+ - [@Anmol Jagota](https://github.com/Anmoljagota)
+ - [@Vishal Girhepunje](https://github.com/vishal-girhepunje)
+ 
