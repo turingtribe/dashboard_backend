@@ -11,15 +11,20 @@ const {
   loginUser,
   loginByMobile,
   verfiyOTP,
+  LogoutUser,
+  getUserDetails,
+  ProfileDetails,
 } = require("../controllers/userController");
 
 UserRoute.post("/register", register);
 UserRoute.post("/login", loginUser);
+UserRoute.get("/logout", AuthMiddleware, LogoutUser);
 UserRoute.get("/login-by-number", loginByMobile);
 UserRoute.post("/verify", verfiyOTP);
-// UserRoute.post("/details", userData);
+UserRoute.patch("/profile", AuthMiddleware, ProfileDetails);
+// UserRoute.post("/details",AuthMiddleware, userData);
 // UserRoute.get("/details", getUserDetails);
-// UserRoute.get("/details", AuthMiddleware, getUserDetails);
+UserRoute.get("/details",AuthMiddleware, getUserDetails);
 module.exports = {
   UserRoute,
 };
