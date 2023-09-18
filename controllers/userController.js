@@ -3,6 +3,7 @@ let otp;
 const { User } = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const Activity = require("../models/activitiesModel");
 require("dotenv").config();
 const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
 const authToken = "7f1a563963b32fb9ef2b68d119dae86d";
@@ -12,24 +13,31 @@ require("dotenv").config();
 //REGISTER USER LOGIC
 const register = async (req, res) => {
   const { userName, email, phone, ReferralCode } = req.body;
-
   try {
-    const user = await User.findOne({
-      where: {
-        email: email,
-      },
-    });
-    if (user === null) {
-      await User.create({
-        userName,
-        email,
-        phone,
-        ReferralCode,
-        isAdmin: false,
+    const mobileRegex = new RegExp(/^((\+91)? |\+)?[ 7-9][0-9]{9}$/);
+    const emailRegex = new RegExp(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    );
+    if (!mobileRegex.test(phone) || !emailRegex.test(email))
+      res.status(401).send({ message: "wrong credentials" });
+    else {
+      const user = await User.findOne({
+        where: {
+          email: email,
+        },
       });
-      res.send({ message: "User created Successfully" });
-    } else {
-      res.send("User Already Exist");
+      if (user === null) {
+        await User.create({
+          userName,
+          email,
+          phone,
+          ReferralCode,
+          isAdmin: false,
+        });
+        res.status(200).send({ message: "User created Successfully" });
+      } else {
+        res.status(401).send("User Already Exist");
+      }
     }
   } catch (err) {
     res.send(err);
@@ -53,7 +61,7 @@ const loginUser = async (req, res) => {
       res.setHeader("Authorization", `Bearer ${token}`);
       res.send(token);
     } else {
-      res.send("wrong otp");
+      res.status(401).send({ message: "wrong otp" });
     }
   } else {
     try {
@@ -68,23 +76,30 @@ const loginUser = async (req, res) => {
         const transport = nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: "anmoljagota08@gmail.com",
-            pass: process.env.otp_password,
+            user: "raibivek58@gmail.com",
+            pass: process.env.EMAILPASSWORD,
           },
         });
 
         const info = {
-          from: "anmoljagota08@gmail.com",
+          from: "raibivek58@gmail.com",
           to: req.body.email,
-          subject: "email verification masai",
-          text: `otp is ${otp}`,
+          subject: "email verification Masai",
+          html: `
+                <b>Hello!</b>
+                <p>You are receiving this email because we received an OTP request for your account.</p>
+                <p>${otp}</p>
+                <p>If you did not request an OTP, no further action is required.</p>
+                <p>Regards,</p>
+                <p>Masai School</p>
+              `,
         };
 
         transport.sendMail(info, (err, result) => {
           if (err) {
             console.log(`error in sending mail ${err}`);
           } else {
-            res.send("otp send");
+            res.status(200).send({ message: "OTP sent" });
           }
         });
       } else {
@@ -110,7 +125,7 @@ const loginByMobile = async (req, res) => {
       rotp = Math.floor(100000 + Math.random() * 900000);
       client.messages
         .create({
-          body: "Hello your otp for Masai School is " + rotp,
+          body: `Masai School says: Here's your OTP: ${otp}. Don't worry if you didn't ask for it, just ignore.`,
           from: "+13347317373",
           to: "+91" + phone,
         })
@@ -136,11 +151,12 @@ const verfiyOTP = async (req, res) => {
   if (user?.dataValues?.userId && otp == rotp) {
     var token = jwt.sign({ userId: user.dataValues.userId }, "loginornot");
     res.setHeader("Authorization", `Bearer ${token}`);
-    return res.status(200).send(token);
+    res.status(200).send(token);
   } else {
-    return res.status(404).send("not found");
+    res.status(404).send("not found");
   }
 };
+
 
 module.exports = {
   register,

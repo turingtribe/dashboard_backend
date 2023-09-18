@@ -8,6 +8,15 @@ const Activity = database_config.define("Activities", {
     primaryKey: true,
     autoIncrement: true,
   },
+  title: {
+    type: DataTypes.STRING(255),
+  },
+  aboutEvent: {
+    type: DataTypes.STRING(255),
+  },
+  aboutSpeaker: {
+    type: DataTypes.STRING(255),
+  },
   type: {
     type: DataTypes.BOOLEAN,
   },
@@ -25,12 +34,16 @@ const Activity = database_config.define("Activities", {
   },
   register: {
     type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   vedioUrl: {
     type: DataTypes.STRING,
   },
   zoomlink: {
     type: DataTypes.STRING,
+  },
+  peopleRegistered: {
+    type: DataTypes.INTEGER,
   },
   user_id: {
     type: DataTypes.INTEGER,
@@ -40,7 +53,7 @@ const Activity = database_config.define("Activities", {
     },
   },
 });
-
+// database_config.sync({ force: true });
 Activity.sync()
   .then(() => {
     console.log("Activity table created");
