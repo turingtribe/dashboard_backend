@@ -1,6 +1,6 @@
 // General configuration (e.g., environment variables)
 PORT = 8000;
-database = "";
+database = "Dashboard_backend";
 username = "root";
-password = "";
+password = "6809";
 host = "localhost";
