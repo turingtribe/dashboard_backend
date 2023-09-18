@@ -11,18 +11,40 @@ class ActivityController {
   }
 
   async getAllActivities(req, res) {
-    try {
-      const activities = await Activity.findAll();
-      for (let activity of activities) {
-        if (activity.type == true) {
-          activity.type = "Masterclass";
-        } else {
-          activity.type = "Webinar";
+    if (req.query.type) {
+      try {
+        const activityId = req.query.type;
+
+        const activities = await Activity.findAll({
+          where: {
+            type: activityId,
+          },
+        });
+        for (let activity of activities) {
+          if (activity.type == true) {
+            activity.type = "Masterclass";
+          } else {
+            activity.type = "Webinar";
+          }
         }
+        res.send(activities);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
       }
-      res.status(200).json(activities);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } else {
+      try {
+        const activities = await Activity.findAll();
+        for (let activity of activities) {
+          if (activity.type == true) {
+            activity.type = "Masterclass";
+          } else {
+            activity.type = "Webinar";
+          }
+        }
+        res.status(200).json(activities);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
     }
   }
 
@@ -56,6 +78,10 @@ class ActivityController {
       res.status(500).json({ error: error.message });
     }
   }
-  
+
+  async registerActivity(req, res) {
+    
+  }
 }
-module.exports = ActivityController;
+
+module.exports = { ActivityController };

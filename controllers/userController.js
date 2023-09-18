@@ -8,7 +8,6 @@ require("dotenv").config();
 const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
 const authToken = "7f1a563963b32fb9ef2b68d119dae86d";
 const client = require("twilio")(accountSid, authToken);
-require("dotenv").config();
 
 //REGISTER USER LOGIC
 const register = async (req, res) => {
@@ -58,7 +57,7 @@ const loginUser = async (req, res) => {
         { userId: email_verification.dataValues.userId },
         "loginornot"
       );
-      res.setHeader("Authorization", `Bearer ${token}`);
+      res.setHeader("Authorization", `${token}`);
       res.send(token);
     } else {
       res.status(401).send({ message: "wrong otp" });
@@ -150,47 +149,76 @@ const verfiyOTP = async (req, res) => {
 
   if (user?.dataValues?.userId && otp == rotp) {
     var token = jwt.sign({ userId: user.dataValues.userId }, "loginornot");
-    res.setHeader("Authorization", `Bearer ${token}`);
+    res.setHeader("Authorization", `${token}`);
     res.status(200).send(token);
   } else {
     res.status(404).send("not found");
   }
 };
 
+const logOutUser = (req, res) => {
+  res.removeHeader("Authorization");
+  res.send("User Logout");
+};
+
+//GET USER DETAILS
+const getUserDetails = async (req, res) => {
+  const finduser = req.body.userId;
+  console.log(finduser, "finduser");
+  try {
+    const getuser = await User.findOne({
+      where: { userId: finduser },
+    });
+    res.send(getuser);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const profileDetails = async (req, res) => {
+  const finduser = req.body.userId;
+
+  const { profileImage, dob, work, graduation, adharCard } = req.body;
+  console.log(profileImage, "profileimage");
+  try {
+    // Find the user by ID
+    const user = await User.findByPk(finduser);
+    console.log(user.email, "user...");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // if (!dob) {
+    //   user.dob = dob;
+    // }
+    if (profileImage !== undefined) {
+      user.profileImage = profileImage;
+    }
+    if (work !== undefined) {
+      user.work = work;
+    }
+    if (graduation !== undefined) {
+      user.graduation = graduation;
+    }
+    if (adharCard !== undefined) {
+      user.adharCard = adharCard;
+    }
+    await user.save();
+    res.status(200).send("profile updated");
+    // return res.status(200).json({ message: "Email updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
   register,
   loginUser,
   loginByMobile,
   verfiyOTP,
+  logOutUser,
+  getUserDetails,
+  profileDetails,
 };
-
-// userDetails code
-// const { UserDetail } = require("../models/userModel");
-// const userData = async (req, res) => {
-//   try {
-//     const { profileImage, dob, graduation, work, adharCard } = req.body;
-
-//     await UserDetail.create({ profileImage, dob, graduation, work, adharCard });
-//     res.send("User Details Added");
-//   } catch (err) {
-//     console.log(err);
-//     res.send(`some error to create userDetails ${err}`);
-//   }
-// };
-
-// //GET USER DETAILS
-// const getUserDetails = async (req, res) => {
-//   const finduser = req.body.UserId;
-//   try {
-//     const getuser = await UserDetail.findOne({
-//       where: { UserDetailsId: finduser },
-//     });
-//     console.log(getuser);
-//     res.send(getuser);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
-
-// module.exports = { userData, getUserDetails };

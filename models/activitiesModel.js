@@ -37,10 +37,10 @@ const Activity = database_config.define("Activities", {
     defaultValue: false,
   },
   vedioUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
   },
   zoomlink: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
   },
   peopleRegistered: {
     type: DataTypes.INTEGER,
