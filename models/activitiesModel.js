@@ -27,10 +27,10 @@ const Activity = database_config.define("Activities", {
     type: DataTypes.BOOLEAN,
   },
   vedioUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
   },
   zoomlink: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
   },
   user_id: {
     type: DataTypes.INTEGER,
