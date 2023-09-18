@@ -5,7 +5,7 @@ const database_config = new Sequelize({
   dialect: "mysql", // Change this to your database dialect
   database: "Dashboard_backend",
   username: "root",
-  password: "tanya123",
+  password: "6809",
   host: "localhost", // Change this to your database host
 });
 

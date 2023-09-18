@@ -1,12 +1,10 @@
 // Middleware for authentication
 const jwt = require("jsonwebtoken");
 const AuthMiddleware = (req, res, next) => {
-  const token = req.headers.auth;
-  console.log("i am token", token);
-  if (token) {
+  const token = req.headers.authorization;
+if (token) {
     const decode = jwt.verify(token, "loginornot");
-    req.body.userId = decode.UserId;
-    console.log("i am decode", decode);
+    req.body.userId = decode.userId;
     if (decode) {
       next();
     }
