@@ -1,8 +1,10 @@
 const express = require("express");
+const CourseController = require("../controllers/courseController");
+const { AuthMiddleware } = require("../middleware/authentication");
 const CourseRoute = express.Router();
-const { course } = require("../controllers/courseController");
-
-CourseRoute.post("/course", course);
-module.exports = {
-  CourseRoute,
-};
+const courseController = new CourseController();
+CourseRoute.post("/courses", courseController.createCourse);
+CourseRoute.get("/courses", courseController.getCourses);
+//adds course to user, get all the course from user;
+CourseRoute.get("/user-course", AuthMiddleware, courseController.userCourse);
+module.exports = { CourseRoute };

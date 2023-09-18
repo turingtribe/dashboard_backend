@@ -5,8 +5,8 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const Activity = require("../models/activitiesModel");
 require("dotenv").config();
-const accountSid = "ACd31e56c6da35b7a82e2d848489764653";
-const authToken = "7f1a563963b32fb9ef2b68d119dae86d";
+const accountSid = process.env.SMSSID;
+const authToken = process.env.SMSTOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 //REGISTER USER LOGIC
@@ -45,28 +45,47 @@ const register = async (req, res) => {
 
 //LOGIN USER LOGIC
 const loginUser = async (req, res) => {
-  const { email } = req.body;
+  const { value } = req.body;
+  // console.log(value);
+  const mobileRegex = new RegExp(/^((\+91)? |\+)?[ 7-9][0-9]{9}$/);
+  const emailRegex = new RegExp(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  );
   if (req?.query?.otp) {
     if (otp == req.query.otp) {
-      const email_verification = await User.findOne({
-        where: {
-          email: email,
-        },
-      });
-      const token = jwt.sign(
-        { userId: email_verification.dataValues.userId },
-        "loginornot"
-      );
-      res.setHeader("Authorization", `${token}`);
-      res.send(token);
+      if (emailRegex.test(value)) {
+        const email_verification = await User.findOne({
+          where: {
+            email: value,
+          },
+        });
+        const token = jwt.sign(
+          { userId: email_verification.dataValues.userId },
+          "loginornot"
+        );
+        res.setHeader("Authorization", `${token}`);
+        res.status(200).send(token);
+      } else if (mobileRegex.test(value)) {
+        const mobile_verification = await User.findOne({
+          where: {
+            phone: value,
+          },
+        });
+        const token = jwt.sign(
+          { userId: mobile_verification.dataValues.userId },
+          "loginornot"
+        );
+        res.setHeader("Authorization", `${token}`);
+        res.status(200).send(token);
+      }
     } else {
       res.status(401).send({ message: "wrong otp" });
     }
-  } else {
+  } else if (emailRegex.test(value)) {
     try {
       const user = await User.findOne({
         where: {
-          email: email,
+          email: value,
         },
       });
 
@@ -82,7 +101,7 @@ const loginUser = async (req, res) => {
 
         const info = {
           from: "raibivek58@gmail.com",
-          to: req.body.email,
+          to: value,
           subject: "email verification Masai",
           html: `
                 <b>Hello!</b>
@@ -107,52 +126,29 @@ const loginUser = async (req, res) => {
     } catch (err) {
       res.status(401).send(err);
     }
-  }
-};
-
-let rotp = 0;
-// login using mobile number
-const loginByMobile = async (req, res) => {
-  try {
-    const { phone } = req.body;
-    const user = await User.findOne({
-      where: {
-        phone: phone,
-      },
-    });
-    if (user?.dataValues?.userId) {
-      rotp = Math.floor(100000 + Math.random() * 900000);
-      client.messages
-        .create({
-          body: `Masai School says: Here's your OTP: ${otp}. Don't worry if you didn't ask for it, just ignore.`,
-          from: "+13347317373",
-          to: "+91" + phone,
-        })
-        .then((message) => console.log(message.sid))
-        .done();
-      res.status(200).send({ message: "OTP sent 540321" });
-    } else {
-      res.status(404).send("not found");
-    }
-  } catch (error) {
-    res.status(404).send(error);
-  }
-};
-
-const verfiyOTP = async (req, res) => {
-  const { otp, phone } = req.body;
-  const user = await User.findOne({
-    where: {
-      phone: phone,
-    },
-  });
-
-  if (user?.dataValues?.userId && otp == rotp) {
-    var token = jwt.sign({ userId: user.dataValues.userId }, "loginornot");
-    res.setHeader("Authorization", `${token}`);
-    res.status(200).send(token);
   } else {
-    res.status(404).send("not found");
+    if (mobileRegex.test(value)) {
+      const user = await User.findOne({
+        where: {
+          phone: value,
+        },
+      });
+      if (user?.dataValues?.userId) {
+        otp = Math.floor(100000 + Math.random() * 900000);
+        client.messages
+          .create({
+            body: `Masai School says: Here's your OTP: ${otp}. Don't worry if you didn't ask for it, just ignore.`,
+            from: "+13347317373",
+            to: "+91" + value,
+          })
+          .then((message) => console.log(message.sid));
+        res.status(200).send({ message: "OTP sent " + otp });
+      } else {
+        res.status(404).send("not found");
+      }
+    } else {
+      res.status(401).send({ message: "wrong phone number" });
+    }
   }
 };
 
@@ -177,7 +173,6 @@ const getUserDetails = async (req, res) => {
 
 const profileDetails = async (req, res) => {
   const finduser = req.body.userId;
-
   const { profileImage, dob, work, graduation, adharCard } = req.body;
   console.log(profileImage, "profileimage");
   try {
@@ -189,9 +184,9 @@ const profileDetails = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // if (!dob) {
-    //   user.dob = dob;
-    // }
+    if (dob != undefined) {
+      user.dob = dob;
+    }
     if (profileImage !== undefined) {
       user.profileImage = profileImage;
     }
@@ -216,8 +211,6 @@ const profileDetails = async (req, res) => {
 module.exports = {
   register,
   loginUser,
-  loginByMobile,
-  verfiyOTP,
   logOutUser,
   getUserDetails,
   profileDetails,

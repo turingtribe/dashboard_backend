@@ -41,6 +41,10 @@ const User = database_config.define(
         isDate: true, // Ensure that the value is a valid date
       },
     },
+    work: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     graduation: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -51,7 +55,7 @@ const User = database_config.define(
     adharCard: {
       type: DataTypes.BOOLEAN,
       allowNull: true, // You can set allowNull to true if the value can be null
-      defaultValue: true, // You can set a default value if needed
+      defaultValue: false, // You can set a default value if needed
     },
   },
   {

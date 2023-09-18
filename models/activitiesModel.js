@@ -3,7 +3,7 @@ const { database_config } = require("../config/database"); // Replace with your 
 const { User } = require("./userModel");
 
 const Activity = database_config.define("Activities", {
-  activicesId: {
+  activityId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,

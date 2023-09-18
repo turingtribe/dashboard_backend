@@ -130,21 +130,36 @@ class MsatController {
       res.status(501).send(error);
     }
   }
-
+  async registerMsat(req, res) {
+    try {
+      const userId = req.body.userId;
+      const user = await User.findByPk(userId);
+      const msatId = req.params.msatId;
+      const msat = await Msat.findByPk(msatId);
+      msat.user_Id = userId;
+      msat.save();
+      res.status(200).send("registered");
+    } catch (error) {
+      res.status(401).send(error);
+    }
+  }
   async userScore(req, res) {
     try {
-      const authToken = req.headers.authorization;
-      const decodedToken = jwt.verify(authToken, "loginornot");
-      console.log(
-        "=============================================\n============================="
-      );
-
-      // Extract the user ID from the payload
-      const userId = decodedToken.sub;
-
-      // Query the database to get the user details
+      const userId = req.body.userId;
       const user = await User.findByPk(userId);
-      console.log("i am token", user);
+      if (user != null) {
+        const sub_section = await MsatSubSection.findAll();
+        const scores = [];
+        for (let section of sub_section) {
+          scores.push({
+            title: section.dataValues.sub_section_name,
+            score: section.dataValues.score,
+          });
+        }
+        res.status(200).send(scores);
+      } else {
+        res.status(401).send({ message: "UnAuthorised" });
+      }
     } catch (error) {
       res.status(501).send(error);
     }

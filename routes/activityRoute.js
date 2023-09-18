@@ -3,7 +3,6 @@ const { AuthMiddleware } = require("../middleware/authentication");
 const ActivityController = require("../controllers/activityControllers");
 const activityRoute = express.Router();
 const activityController = new ActivityController();
-
 activityRoute.post("/activities", activityController.createActivity);
 activityRoute.get("/activities", activityController.getAllActivities);
 activityRoute.get(
@@ -14,7 +13,7 @@ activityRoute.delete(
   "/activities/:activityId",
   activityController.deleteActivity
 );
-activityRoute.get(
+activityRoute.patch(
   "/register-activity",
   AuthMiddleware,
   activityController.registerActivity

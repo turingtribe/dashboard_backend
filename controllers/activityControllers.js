@@ -1,5 +1,5 @@
 const Activity = require("../models/activitiesModel");
-
+const { User } = require("../models/userModel");
 class ActivityController {
   async createActivity(req, res) {
     try {
@@ -80,8 +80,23 @@ class ActivityController {
   }
 
   async registerActivity(req, res) {
-    
+    const finduser = req.body.userId;
+    try {
+      const user = await User.findByPk(finduser);
+      if (req?.query?.activityId && user) {
+        const activityId = req.query.activityId;
+        const activity = await Activity.findByPk(activityId);
+        activity.user_id = finduser;
+        activity.register = true;
+        await activity.save();
+        res.status(200).send(activity);
+      } else {
+        res.status(401).send({ message: "Incorrect activityId" });
+      }
+    } catch (err) {
+      res.status(401).send(err);
+    }
   }
 }
 
-module.exports = { ActivityController };
+module.exports = ActivityController;
