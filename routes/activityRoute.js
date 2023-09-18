@@ -1,30 +1,20 @@
 const express = require("express");
-const UserRoute = express.Router();
-// const {
-//   userData,
-//   getUserDetails,
-// } = require("../controllers/userDeatilsController");
-
-const { AuthMiddleware } = require("../middleware/authentication");
-const {
-  register,
-  loginUser,
-  loginByMobile,
-  verfiyOTP,
-  LogoutUser,
-  getUserDetails,
-  ProfileDetails,
-} = require("../controllers/userController");
-
-UserRoute.post("/register", register);
-UserRoute.post("/login", loginUser);
-UserRoute.get("/logout", AuthMiddleware, LogoutUser);
-UserRoute.get("/login-by-number", loginByMobile);
-UserRoute.post("/verify", verfiyOTP);
-UserRoute.patch("/profile", AuthMiddleware, ProfileDetails);
-// UserRoute.post("/details",AuthMiddleware, userData);
-// UserRoute.get("/details", getUserDetails);
-UserRoute.get("/details",AuthMiddleware, getUserDetails);
-module.exports = {
-  UserRoute,
-};
+const {ActivityController} = require("../controllers/activityControllers");
+const {AuthMiddleware}=require("../middleware/authentication")
+const activityRoute = express.Router();
+const activityController = new ActivityController();
+activityRoute.post("/activities",AuthMiddleware, activityController.createActivity);
+activityRoute.get("/activities", activityController.getAllActivities);
+activityRoute.get(
+  "/activities/:activityId",
+  activityController.getActivityById
+);
+activityRoute.get(
+  "/type",
+  activityController.getActivityByType
+);
+activityRoute.delete(
+  "/activities/:activityId",
+  activityController.deleteActivity
+);
+module.exports = { activityRoute };
