@@ -19,6 +19,9 @@ app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
+//testing
+app.use("/", require("./routes/testing"));
+
 //CREATED THE SERVER
 app.listen(PORT, async () => {
   try {
