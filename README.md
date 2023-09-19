@@ -86,220 +86,156 @@ Provide a brief overview of the project, its purpose, and any key features.
 
 List the available API endpoints and their descriptions here.
 
-### /api/users
+# Backend API Documentation
 
-- `GET`: Retrieve a list of users.
-- `POST`: Create a new user.
+Welcome to the backend API documentation for our project. This documentation provides information on available endpoints and how to use them for frontend development.
 
-### /api/users/:userId
+## Table of Contents
 
-- `GET`: Retrieve details of a specific user.
-- `PUT`: Update user details.
-- `DELETE`: Delete a user.
+1. [User Routes](#activities-routes)
+2. [Activities Routes](#course-routes)
+3. [Courses Routes](#msat-routes)
+4. [Msat Routes](#user-routes)
 
-### /api/courses
-
-- `GET`: Retrieve a list of courses.
-- `POST`: Create a new course.
-
-### /api/courses/:courseId
-
-- `GET`: Retrieve details of a specific course.
-- `PUT`: Update course details.
-- `DELETE`: Delete a course.
-
-### /api/msats
-
-- `GET`: Retrieve a list of MSAT records.
-- `POST`: Create a new MSAT record.
-
-### /api/msats/:msatId
-
-- `GET`: Retrieve details of a specific MSAT record.
-- `PUT`: Update MSAT record details.
-- `DELETE`: Delete an MSAT record.
-
-### /api/msat-subsections
-
-- `GET`: Retrieve a list of MSAT subsections.
-- `POST`: Create a new MSAT subsection.
-
-### /api/msat-subsections/:sub_sectionId
-
-- `GET`: Retrieve details of a specific MSAT subsection.
-- `PUT`: Update MSAT subsection details.
-- `DELETE`: Delete an MSAT subsection.
-
-### /api/questions
-
-- `GET`: Retrieve a list of questions.
-- `POST`: Create a new question.
-
-### /api/questions/:questionId
-
-- `GET`: Retrieve details of a specific question.
-- `PUT`: Update question details.
-- `DELETE`: Delete a question.
-
-### /api/options
-
-- `GET`: Retrieve a list of options.
-- `POST`: Create a new option.
-
-### /api/options/:optionId
-
-- `GET`: Retrieve details of a specific option.
-- `PUT`: Update option details.
-- `DELETE`: Delete an option.
-
-### /api/activities
-
-- `GET`: Retrieve a list of activities.
-- `POST`: Create a new activity.
-
-### /api/activities/:activitiesId
-
-- `GET`: Retrieve details of a specific activity.
-- `PUT`: Update activity details.
-- `DELETE`: Delete an activity.
-
-### ...
-
-List other API endpoints if applicable.
-
-## Usage
-
-Provide instructions on how to run and use the project. Include any environment setup, dependencies, and startup commands.
-
-## Contributing
-
-Explain how others can contribute to the project if applicable.
-
-## License
-
-Specify the project's license if applicable.
-
-## Details UnderStanding
-
-# API Endpoints
-
-This document provides details about the available API endpoints and their descriptions for your project.
+---
 
 ## User Routes
 
-### Register a New User
+### Register User
 
-- *URL:* `/api/user/register`
-- *Method:* `POST`
-- *Description:* Register a new user.
-- *Request Body:*
-  - `userName` (string, required): User's username.
-  - `email` (string, required): User's email address.
-  - `phoneNumber` (string, required): User's phone number.
-  - `password` (string, required): User's password.
+- **URL:** `https://dash-board.up.railway.app/register`
+- **Method:** `POST`
+- **Description:** Register a new user.
+- **Request Body:**
+  - Include user registration details.
 
-### User Login by email_OTP
+### Login User
 
-- *URL:* `/api/user/login`
-- *Method:* `POST`
-- *Description:* Log in a user.
-- *Request Body:*
-  - `email` (string, required): User's email address.
-  - `OTP` (string, required): User's password.<br>
-  <br>After getting OTP pass otp as a query to same endpoints =>
-  /api/user/login?otp="otp that user entered" <br>
-  
+- **URL:** `https://dash-board.up.railway.app/log-in`
+- **Method:** `POST`
+- **Description:** Log in an existing user.
+- **Request Body:**
+  - Include user login credentials.
 
-### Login by Mobile Number
+### Logout User
 
-- *URL:* `/api/user/login-by-number`
-- *Method:* `GET`
-- *Description:* Log in using a mobile number.
-- *Query Parameters:*
-  - `mobile` (string, required): User's mobile number.
-  
+- **URL:** `https://dash-board.up.railway.app/logout`
+- **Method:** `GET`
+- **Description:** Log out the authenticated user.
+- **Authentication:** Requires user authentication.
+
+<!-- ### Login by Mobile Number
+
+- **URL:** `https://dash-board.up.railway.app/login-by-number`
+- **Method:** `GET`
+- **Description:** Log in using a mobile number.
+
 ### Verify OTP
 
-- *URL:* `/api/user/verify`
-- *Method:* `POST`
-- *Description:* Verify OTP for login.
-- *Request Body:*
-  - `mobile` (string, required): User's mobile number.
-  - `otp` (string, required): OTP for verification.
-
-  
-### Logout User
-- *URL:* `/api/user/logout`
-- *Method:* `GET`
-- *Description:* Log out the authenticated user.
-- *Authentication:* Requires user authentication.
-
-
-### Get User Details
-
-- *URL:* `/api/user/details`
-- *Method:* `GET`
-- *Description:* Get details of the authenticated user.
-- *Authentication:* Requires user authentication.
-
-### Add details of User
-- *URL:* `/api/user/addDetails`
-- *Method:* `Post`
-- *Description:* Adds details about user like name and profile picture,
-profileImage,dob,graduation,work,adharcard,userName,email,phoneNumber
-  post the authenticated user.
-- *Request body* :
+- **URL:** `https://dash-board.up.railway.app/verify`
+- **Method:** `POST`
+- **Description:** Verify the OTP (One-Time Password). -->
 
 ### Update User Profile
 
-- *URL:* `/api/user/profile`
-- *Method:* `PATCH`
-- *Description:* Update the authenticated user's profile.
-- *Authentication:* Requires user authentication.
-- *Request Body:*
-  - Include fields that can be updated (e.g., `userName`, `email`, `phoneNumber`, etc.).
+- **URL:** `https://dash-board.up.railway.app//update-profile`
+- **Method:** `PATCH`
+- **Description:** Update the user's profile.
+- **Authentication:** Requires user authentication.
+
+### Get User Details
+
+- **URL:** `https://dash-board.up.railway.app/user-details`
+- **Method:** `GET`
+- **Description:** Retrieve user details.
+- **Authentication:** Requires user authentication.
+
+## Activities Routes
+
+### Create an Activity
+
+- **URL:** `https://dash-board.up.railway.app/activities`
+- **Method:** `POST`
+- **Description:** Create a new activity.
+- **Authentication:** Requires user authentication.
+- **Request Body:**
+  - Include details for the new activity.
+
+### Get All Activities
+
+- **URL:** `https://dash-board.up.railway.app/activities`
+- **Method:** `GET`
+- **Description:** Retrieve a list of all activities.
+
+### Get Activity by ID
+
+- **URL:** `https://dash-board.up.railway.app/activities/:activityId`
+- **Method:** `GET`
+- **Description:** Retrieve an activity by its ID.
+
+### Get Activities by Type
+
+- **URL:** `https://dash-board.up.railway.app/type`
+- **Method:** `GET`
+- **Description:** Retrieve activities by type. <br>
+activities?type=1 then it will give result according to masterclass
+elseif activities?type=0  according to webinar
+else activities  according to that we get all activities
+
+### Delete Activity
+
+- **URL:** `https://dash-board.up.railway.app/activities/:activityId`
+- **Method:** `DELETE`
+- **Description:** Delete an activity by its ID.
+- **Authentication:** Requires user authentication.
+
+---
 
 ## Course Routes
 
-### Create a New Course
+### Create a Course
 
-- *URL:* `/api/course`
-- *Method:* `POST`
-- *Description:* Create a new course.
-- *Request Body:*
-  - `title` (string, required): Course title.
-  - `startDate` (date): Course start date.
-  - `courseTypes` (enum: UXUI, WD, DA, AD): Course types.
-  - `batch` (boolean): Batch information.
-- *Authentication:* Requires user authentication.
+- **URL:** `https://dash-board.up.railway.app/courses`
+- **Method:** `POST`
+- **Description:** Create a new course.
+- **Request Body:**
+  - Include details for the new course.
+
+---
+
+### Get a courses
+
+- **URL:** `https://dash-board.up.railway.app/courses`
+- **Method:** `GET`
+- **Description:** Get all courses. <br>
 
 ## MSAT Routes
 
-### Create an MSAT Record
+### Create MSAT Models
 
-- *URL:* `/api/msat`
-- *Method:* `POST`
-- *Description:* Create a new MSAT record.
-- *Request Body:*
-  - Include required fields for creating an MSAT record.
-- *Authentication:* Requires user authentication.
+- **URL:** `https://dash-board.up.railway.app/msat`
+- **Method:** `POST`
+- **Description:** Create MSAT models.
 
-### Get All MSAT Records
+### Get All MSAT
 
-- *URL:* `/api/msat`
-- *Method:* `GET`
-- *Description:* Retrieve a list of all MSAT records.
+- **URL:** `https://dash-board.up.railway.app/msat`
+- **Method:** `GET`
+- **Description:** Retrieve a list of all MSAT records.
 
 ### Calculate MSAT Score
 
-- *URL:* `/api/msat/score`
-- *Method:* `PATCH`
-- *Description:* Calculate the MSAT score.
-- *Authentication:* Requires user authentication.
+- **URL:** `https://dash-board.up.railway.app/msat/score`
+- **Method:** `PATCH`
+- **Description:** Calculate MSAT scores.
 
 ### Get User's MSAT Score
 
-- *URL:* `/api/msat/user-score`
-- *Method:* `GET`
-- *Description:* Get the MSAT score of the authenticated user.
-- *Authentication:* Requires user authentication.
+- **URL:** `https://dash-board.up.railway.app/msat/user-score`
+- **Method:** `GET`
+- **Description:** Retrieve a user's MSAT score.
+- **Authentication:** Requires user authentication.
+
+---
+
+Feel free to refer to this documentation while working on the frontend to understand the available endpoints and their usage.
