@@ -5,16 +5,15 @@
 Brief project description here.
 
 ## Table of Contents
-- [Project ErDiagram]
 - [Project Overview](#project-overview)
 - [Database Schema](#database-schema)
 - [API Endpoints](#api-endpoints)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Project ErDiagram
-<img src="https://github.com/turingtribe/dashboard_backend/blob/activity_update/Image20230920161956.png?raw=true"/>
+<img src="https://github.com/turingtribe/dashboard_backend/blob/activity_update/Image20230920161956.png?raw=true"/><br><br>
+
 ## Project Overview
 
 Provide a brief overview of the project, its purpose, and any key features.
