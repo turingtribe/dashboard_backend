@@ -88,7 +88,7 @@ const loginUser = async (req, res) => {
           }
         });
       } else {
-        res.status(404).send({ message: "Wrong Credentials" });
+        res.status(200).send({ message: "user not found" });
       }
     } catch (err) {
       res.status(401).send(err);
